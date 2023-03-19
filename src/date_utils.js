@@ -58,8 +58,10 @@ import toDate from "date-fns/toDate";
 import parse from "date-fns/parse";
 import parseISO from "date-fns/parseISO";
 import longFormatters from "date-fns/esm/_lib/format/longFormatters";
+import formatInTimeZone from "date-fns-tz/formatInTimeZone";
 
 export const DEFAULT_YEAR_ITEM_NUMBER = 12;
+export const DEFAULT_TIME_ZONE = "Asia/Hong_Kong";
 
 // ** Date Constructors **
 
@@ -105,7 +107,9 @@ export function isValid(date, minDate) {
 
 export function formatDate(date, formatStr, locale) {
   if (locale === "en") {
-    return format(date, formatStr, { awareOfUnicodeTokens: true });
+    return formatInTimeZone(date, DEFAULT_TIME_ZONE, formatStr, {
+      awareOfUnicodeTokens: true,
+    });
   }
   const localeObj =
     getLocaleObject(locale) || getLocaleObject(getDefaultLocale()) || null;
@@ -114,7 +118,7 @@ export function formatDate(date, formatStr, locale) {
       `A locale object was not found for the provided string ["${locale}"].`
     );
   }
-  return format(date, formatStr, {
+  return formatInTimeZone(date, DEFAULT_TIME_ZONE, formatStr, {
     locale: localeObj,
     awareOfUnicodeTokens: true,
   });
